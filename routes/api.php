@@ -29,6 +29,16 @@ Route::get('/db-check', function () {
     }
 });
 
+Route::get('/ssl-check', function () {
+    $path = env('MYSQL_ATTR_SSL_CA');
+    return [
+        'path' => $path,
+        'exists' => file_exists($path),
+        'readable' => is_readable($path),
+        'size' => file_exists($path) ? filesize($path) : null,
+    ];
+});
+
 // Products
 Route::prefix('products')->group(function () {
     Route::get('/',                ProductController::class . '@index');
