@@ -20,6 +20,15 @@ Route::get('/health', function () {
     ]);
 });
 
+Route::get('/db-check', function () {
+    try {
+        DB::connection()->getPdo();
+        return 'DB connected: ' . DB::connection()->getDatabaseName();
+    } catch (\Exception $e) {
+        return 'DB connection failed: ' . $e->getMessage();
+    }
+});
+
 // Products
 Route::prefix('products')->group(function () {
     Route::get('/',                ProductController::class . '@index');
